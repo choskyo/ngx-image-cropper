@@ -80,7 +80,10 @@ export class ImageCropperComponent implements OnChanges {
         y2: 10000
     };
 
-    @Output() imageCropped = new EventEmitter<string>();
+    @Output() imageCropped = new EventEmitter<{
+        image: string,
+        cropper: CropperPosition
+    }>();
     @Output() imageLoaded = new EventEmitter<void>();
     @Output() loadImageFailed = new EventEmitter<void>();
 
@@ -415,7 +418,10 @@ export class ImageCropperComponent implements OnChanges {
                 const quality = Math.min(1, Math.max(0, this.imageQuality / 100));
                 const croppedImage = cropCanvas.toDataURL('image/' + this.format, quality);
                 if (croppedImage.length > 10) {
-                    this.imageCropped.emit(croppedImage);
+                    this.imageCropped.emit({
+                        image: croppedImage,
+                        cropper: this.cropper
+                    });
                 }
             }
         }
